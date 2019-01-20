@@ -4,6 +4,7 @@ import {observer} from 'mobx-react';
 import { ACTIVE_TODOS, COMPLETED_TODOS } from '../constants';
 
 import TodoItem from './todoItem';
+import tagStore from '../stores/TagStore';
 
 @observer
 export default class TodoOverview extends React.Component {
@@ -26,7 +27,7 @@ export default class TodoOverview extends React.Component {
 						key={todo.id}
 						todo={todo}
 						viewStore={viewStore}
-						todoStore={todoStore}
+						tagStore={tagStore}
 					/>)
 				)}
 			</ul>

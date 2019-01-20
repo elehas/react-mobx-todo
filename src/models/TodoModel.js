@@ -31,11 +31,12 @@ export default class TodoModel {
 		return {
 			id: this.id,
 			title: this.title,
+			tags: this.tags,
 			completed: this.completed
 		};
 	}
 
 	static fromJS(store, object) {
-		return new TodoModel(store, object.id, object.title, object.completed);
+		return new TodoModel(store, object.id, object.title, object.tags, object.completed);
 	}
 }

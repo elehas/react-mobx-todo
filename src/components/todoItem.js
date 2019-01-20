@@ -75,13 +75,25 @@ export default class TodoItem extends React.Component {
 
 	handleTagChange = (event) => {
 		this.tagText = event.target.value;
-		console.log(this.tagText);
+		// console.log(this.tagText);
 	}
 
+	@action
 	handleTagKeyDown = (event) => {
 		if (event.which === ESCAPE_KEY) {
 			this.tagText = '';
 			this.props.viewStore.todoBeingTagged = null;
+		} else if (event.which === ENTER_KEY) {
+			this.handleSubmitTag(event);
+		}
+	}
+
+	@action
+	handleSubmitTag = (event) => {
+		let val = this.tagText.trim();
+		if (val) {
+			this.props.tagStore.addTag(val);
+			this.tagText = '';
 		}
 	}
 
