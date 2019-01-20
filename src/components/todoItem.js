@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {observer} from 'mobx-react';
 import {observable, action, computed} from 'mobx';
+import * as Utils from '../utils';
 
 const ESCAPE_KEY = 27;
 const ENTER_KEY = 13;
@@ -43,7 +44,7 @@ export default class TodoItem extends React.Component {
 					<div className="tags">
 						{
 							this.getTodoTags(todo.id).map(tag => (
-								<span className="tag">{tag.text}</span>
+								<span key={Utils.uuid} className="tag">{tag.text}</span>
 							))
 						}
 
