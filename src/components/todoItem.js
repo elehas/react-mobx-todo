@@ -41,8 +41,11 @@ export default class TodoItem extends React.Component {
 						onKeyDown={this.handleKeyDown}
 					/>
 					<div className="tags">
-						<span className="tag">Urgent</span>
-						<span className="tag">React</span>
+						{
+							this.getTodoTags(todo.id).map(tag => (
+								<span className="tag">{tag.text}</span>
+							))
+						}
 
 						<input
 							ref="todoTagField"
@@ -57,6 +60,16 @@ export default class TodoItem extends React.Component {
 				</li>
 		);
 	}
+
+	getTodoTags (todoId) {
+		let {tags} = this.props.tagStore;
+
+		if(tags.length > 0) {
+			return tags.filter(tag => {
+				return tag.todoId == todoId ? tag.text : '';
+			})
+		}
+	};
 
 	@computed
 	get isBeingEdited() {
@@ -75,7 +88,6 @@ export default class TodoItem extends React.Component {
 
 	handleTagChange = (event) => {
 		this.tagText = event.target.value;
-		// console.log(this.tagText);
 	}
 
 	@action
@@ -92,7 +104,7 @@ export default class TodoItem extends React.Component {
 	handleSubmitTag = (event) => {
 		let val = this.tagText.trim();
 		if (val) {
-			this.props.tagStore.addTag(val);
+			this.props.tagStore.addTag(val, this.props.todo.id);
 			this.tagText = '';
 		}
 	}
