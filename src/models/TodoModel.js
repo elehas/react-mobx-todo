@@ -4,12 +4,14 @@ export default class TodoModel {
 	store;
 	id;
 	@observable title;
+	@observable tags;
 	@observable completed;
 
-	constructor(store, id, title, completed) {
+	constructor(store, id, title, tags=[], completed) {
 		this.store = store;
 		this.id = id;
 		this.title = title;
+		this.tags = tags;
 		this.completed = completed;
 	}
 

@@ -26,6 +26,7 @@ export default class TodoOverview extends React.Component {
 						key={todo.id}
 						todo={todo}
 						viewStore={viewStore}
+						todoStore={todoStore}
 					/>)
 				)}
 			</ul>

@@ -9,41 +9,80 @@ const ENTER_KEY = 13;
 @observer
 export default class TodoItem extends React.Component {
 	@observable editText = "";
+	@observable tagText = "";
 
 	render() {
 		const {todo} = this.props;
 		return (
-			<li className={[
-				todo.completed ? "completed": "",
-				this.isBeingEdited ? "editing" : ""
-			].join(" ")}>
-				<div className="view">
+				<li className={[
+					todo.completed ? "completed": "",
+					this.isBeingEdited ? "editing" : "",
+					this.isBeingTagged ? "tagging" : ""
+				].join(" ")}>
+					<div className="view">
+						<input
+							className="toggle"
+							type="checkbox"
+							checked={todo.completed}
+							onChange={this.handleToggle}
+						/>
+						<label onDoubleClick={this.handleEdit}>
+							{todo.title}
+						</label>
+						<button className="destroy" onClick={this.handleDestroy} />
+						<button className="addTag" onClick={this.handleShowTagInput}>Add tags</button>
+					</div>
 					<input
-						className="toggle"
-						type="checkbox"
-						checked={todo.completed}
-						onChange={this.handleToggle}
+						ref="editField"
+						className="edit"
+						value={this.editText}
+						onBlur={this.handleSubmit}
+						onChange={this.handleChange}
+						onKeyDown={this.handleKeyDown}
 					/>
-					<label onDoubleClick={this.handleEdit}>
-						{todo.title}
-					</label>
-					<button className="destroy" onClick={this.handleDestroy} />
-				</div>
-				<input
-					ref="editField"
-					className="edit"
-					value={this.editText}
-					onBlur={this.handleSubmit}
-					onChange={this.handleChange}
-					onKeyDown={this.handleKeyDown}
-				/>
-			</li>
+					<div className="tags">
+						<span className="tag">Urgent</span>
+						<span className="tag">React</span>
+
+						<input
+							ref="todoTagField"
+							className="tagInput"
+							placeholder="Add some tags to this item"
+							onBlur={this.handleSubmitTag}
+							onChange={this.handleTagChange}
+							onKeyDown={this.handleTagKeyDown}
+							value={this.tagText}
+							/>
+					</div>
+				</li>
 		);
 	}
 
 	@computed
 	get isBeingEdited() {
 		return this.props.viewStore.todoBeingEdited === this.props.todo
+	}
+
+	@computed
+	get isBeingTagged() {
+		return this.props.viewStore.todoBeingTagged === this.props.todo
+	}
+
+	handleShowTagInput = (event) => {
+		event.preventDefault();
+		this.props.viewStore.todoBeingTagged = this.props.todo
+	}
+
+	handleTagChange = (event) => {
+		this.tagText = event.target.value;
+		console.log(this.tagText);
+	}
+
+	handleTagKeyDown = (event) => {
+		if (event.which === ESCAPE_KEY) {
+			this.tagText = '';
+			this.props.viewStore.todoBeingTagged = null;
+		}
 	}
 
 	@action
