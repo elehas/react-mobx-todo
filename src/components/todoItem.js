@@ -43,8 +43,8 @@ export default class TodoItem extends React.Component {
 					/>
 					<div className="tags">
 						{
-							this.getTodoTags(todo.id).map(tag => (
-								<span key={Utils.uuid} className="tag">{tag.text}</span>
+							todo.getTags().map(tag => (
+								<span key={Utils.uuid()} className="tag">{tag}</span>
 							))
 						}
 
@@ -61,16 +61,6 @@ export default class TodoItem extends React.Component {
 				</li>
 		);
 	}
-
-	getTodoTags (todoId) {
-		let {tags} = this.props.tagStore;
-
-		if(tags.length > 0) {
-			return tags.filter(tag => {
-				return tag.todoId == todoId ? tag.text : '';
-			})
-		}
-	};
 
 	@computed
 	get isBeingEdited() {
@@ -105,7 +95,8 @@ export default class TodoItem extends React.Component {
 	handleSubmitTag = (event) => {
 		let val = this.tagText.trim();
 		if (val) {
-			this.props.tagStore.addTag(val, this.props.todo.id);
+			this.props.tagStore.addTag(val);
+			this.props.todo.addTag(val);
 			this.tagText = '';
 		}
 	}

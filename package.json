@@ -52,6 +52,7 @@
     "director": "^1.2.8",
     "express": "^4.15.3",
     "jsesc": "^2.5.1",
+    "lodash": "^4.17.11",
     "mobx": "^4.0.0",
     "mobx-react": "^5.0.0",
     "mobx-react-devtools": "^5.0.0",

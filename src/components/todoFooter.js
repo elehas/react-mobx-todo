@@ -5,6 +5,10 @@ import {action} from 'mobx';
 import {pluralize} from '../utils';
 import { ALL_TODOS, ACTIVE_TODOS, COMPLETED_TODOS } from '../constants';
 
+import _ from 'lodash';
+import * as Utils from '../utils';
+import tagStore from '../stores/TagStore';
+
 @observer
 export default class TodoFooter extends React.Component {
 	render() {
@@ -16,24 +20,37 @@ export default class TodoFooter extends React.Component {
 
 		return (
 			<footer className="footer">
-				<span className="todo-count">
-					<strong>{todoStore.activeTodoCount}</strong> {activeTodoWord} left
-				</span>
-				<ul className="filters">
-					{this.renderFilterLink(ALL_TODOS, "", "All")}
-					{this.renderFilterLink(ACTIVE_TODOS, "active", "Active")}
-					{this.renderFilterLink(COMPLETED_TODOS, "completed", "Completed")}
-				</ul>
-				{ todoStore.completedCount === 0
-					? null
-					: 	<button
-							className="clear-completed"
-							onClick={this.clearCompleted}>
-							Clear completed
-						</button>
-				}
+				<div className="todo-filters">
+					<span className="todo-count">
+						<strong>{todoStore.activeTodoCount}</strong> {activeTodoWord} left
+					</span>
+					<ul className="filters">
+						{this.renderFilterLink(ALL_TODOS, "", "All")}
+						{this.renderFilterLink(ACTIVE_TODOS, "active", "Active")}
+						{this.renderFilterLink(COMPLETED_TODOS, "completed", "Completed")}
+					</ul>
+					{ todoStore.completedCount === 0
+						? null
+						: 	<button
+								className="clear-completed"
+								onClick={this.clearCompleted}>
+								Clear completed
+							</button>
+					}
+				</div>
+				<div className="tag-filters">
+					<div className="tags">
+						{this.renderTagFilters(tagStore.tags).map(filter => {
+							return <span key={Utils.uuid()} className="tag">{filter}</span>
+						})}
+					</div>
+				</div>
 			</footer>
 		);
+	}
+
+	renderTagFilters = (tags) => {
+		return _.uniq(tags);
 	}
 
 	renderFilterLink(filterName, url, caption) {

@@ -1,16 +1,16 @@
 import {observable, computed, reaction, action} from 'mobx';
+import _ from 'lodash';
 import * as Utils from '../utils';
 
 class TagStore {
-  @observable tags = [{}];
+  @observable tags = [];
 
-  addTag = (text, todoId) => {
-    this.tags.push(
-      {
-        text,
-        todoId
-      }
-    );
+  @computed get sortByUniqueTag() {
+
+  }
+
+  addTag = (text) => {
+    this.tags.push(text);
   }
 }
 

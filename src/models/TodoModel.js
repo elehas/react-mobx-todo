@@ -27,6 +27,14 @@ export default class TodoModel {
 		this.title = title;
 	}
 
+	addTag (text) {
+		this.tags.push(text);
+	}
+
+	getTags() {
+		return this.tags;
+	}
+
 	toJS() {
 		return {
 			id: this.id,
