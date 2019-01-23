@@ -43,7 +43,7 @@ export default class TodoFooter extends React.Component {
 							return (
 								<span onClick={
 												() => {
-													if(viewStore.filteredByTag && tagStore.currentlySelected == filter) {
+													if (viewStore.filteredByTag && tagStore.currentlySelected == filter) {
 														viewStore.filteredByTag = false;
 														tagStore.currentlySelected = '';
 													} else {
@@ -53,7 +53,7 @@ export default class TodoFooter extends React.Component {
 												}
 											}
 											key={Utils.uuid()}
-											className="tag">{filter}</span>
+											className={filter === tagStore.currentlySelected ? "tag active" : "tag"}>{filter}</span>
 							)
 						})}
 					</div>
