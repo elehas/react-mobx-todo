@@ -46,6 +46,13 @@ export default class TodoStore {
 		);
 	}
 
+	@action
+	returnTaggedTodos(tag) {
+		return this.todos.filter(todo => {
+			todo.tags.find(todoTag => todoTag === tag);
+		});
+	}
+
 	toJS() {
 		return this.todos.map(todo => todo.toJS());
 	}

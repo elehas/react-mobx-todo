@@ -1,15 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {observer} from 'mobx-react';
+import _ from 'lodash';
 import { ACTIVE_TODOS, COMPLETED_TODOS } from '../constants';
 
 import TodoItem from './todoItem';
-import tagStore from '../stores/TagStore';
 
 @observer
 export default class TodoOverview extends React.Component {
 	render() {
-		const {todoStore, viewStore} = this.props;
+		const {todoStore, viewStore, tagStore} = this.props;
 		if (todoStore.todos.length === 0)
 			return null;
 		return <section className="main">
@@ -38,11 +38,35 @@ export default class TodoOverview extends React.Component {
 		return this.props.todoStore.todos.filter(todo => {
 			switch (this.props.viewStore.todoFilter) {
 				case ACTIVE_TODOS:
-					return !todo.completed;
+					if (this.props.viewStore.filteredByTag) {
+						if(_.includes(todo.tags, this.props.tagStore.currentlySelected) && !todo.completed) {
+							return todo;
+						} else {
+							break;
+						}
+					} else {
+						return !todo.completed;
+					}
 				case COMPLETED_TODOS:
-					return todo.completed;
+					if (this.props.viewStore.filteredByTag) {
+						if(_.includes(todo.tags, this.props.tagStore.currentlySelected) && todo.completed) {
+							return todo;
+						} else {
+							break;
+						}
+					} else {
+						return todo.completed;
+					}
 				default:
-					return true;
+					if (this.props.viewStore.filteredByTag) {
+						if(_.includes(todo.tags, this.props.tagStore.currentlySelected)) {
+							return todo;
+						} else {
+							break;
+						}
+					} else {
+						return true;
+					}
 			}
 		});
 	}
@@ -56,5 +80,6 @@ export default class TodoOverview extends React.Component {
 
 TodoOverview.propTypes = {
 	viewStore: PropTypes.object.isRequired,
-	todoStore: PropTypes.object.isRequired
+	todoStore: PropTypes.object.isRequired,
+	tagStore: PropTypes.object.isRequired
 }

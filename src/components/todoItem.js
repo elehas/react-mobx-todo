@@ -149,5 +149,6 @@ export default class TodoItem extends React.Component {
 
 TodoItem.propTypes = {
 	todo: PropTypes.object.isRequired,
-	viewStore: PropTypes.object.isRequired
+	viewStore: PropTypes.object.isRequired,
+	tagStore: PropTypes.object.isRequired
 };

@@ -7,12 +7,11 @@ import { ALL_TODOS, ACTIVE_TODOS, COMPLETED_TODOS } from '../constants';
 
 import _ from 'lodash';
 import * as Utils from '../utils';
-import tagStore from '../stores/TagStore';
 
 @observer
 export default class TodoFooter extends React.Component {
 	render() {
-		const todoStore = this.props.todoStore;
+		const {todoStore, tagStore, viewStore} = this.props;
 		if (!todoStore.activeTodoCount && !todoStore.completedCount)
 			return null;
 
@@ -41,13 +40,29 @@ export default class TodoFooter extends React.Component {
 				<div className="tag-filters">
 					<div className="tags">
 						{this.renderTagFilters(tagStore.tags).map(filter => {
-							return <span key={Utils.uuid()} className="tag">{filter}</span>
+							return (
+								<span onClick={
+												() => {
+													if(viewStore.filteredByTag && tagStore.currentlySelected == filter) {
+														viewStore.filteredByTag = false;
+														tagStore.currentlySelected = '';
+													} else {
+														viewStore.filteredByTag = true;
+														tagStore.currentlySelected = filter;
+													}
+												}
+											}
+											key={Utils.uuid()}
+											className="tag">{filter}</span>
+							)
 						})}
 					</div>
 				</div>
 			</footer>
 		);
 	}
+
+
 
 	renderTagFilters = (tags) => {
 		return _.uniq(tags);
@@ -71,5 +86,6 @@ export default class TodoFooter extends React.Component {
 
 TodoFooter.propTypes = {
 	viewStore: PropTypes.object.isRequired,
-	todoStore: PropTypes.object.isRequired
+	todoStore: PropTypes.object.isRequired,
+	tagStore: PropTypes.object.isRequired
 }
