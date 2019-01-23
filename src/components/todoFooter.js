@@ -4,6 +4,7 @@ import {observer} from 'mobx-react';
 import {action} from 'mobx';
 import {pluralize} from '../utils';
 import { ALL_TODOS, ACTIVE_TODOS, COMPLETED_TODOS } from '../constants';
+import FilterableTag from './filterableTag';
 
 import _ from 'lodash';
 import * as Utils from '../utils';
@@ -41,19 +42,7 @@ export default class TodoFooter extends React.Component {
 					<div className="tags">
 						{this.renderTagFilters(tagStore.tags).map(filter => {
 							return (
-								<span onClick={
-												() => {
-													if (viewStore.filteredByTag && tagStore.currentlySelected == filter) {
-														viewStore.filteredByTag = false;
-														tagStore.currentlySelected = '';
-													} else {
-														viewStore.filteredByTag = true;
-														tagStore.currentlySelected = filter;
-													}
-												}
-											}
-											key={Utils.uuid()}
-											className={filter === tagStore.currentlySelected ? "tag active" : "tag"}>{filter}</span>
+								<FilterableTag key={Utils.uuid()} filter={filter} viewStore={viewStore} tagStore={tagStore} />
 							)
 						})}
 					</div>
@@ -61,8 +50,6 @@ export default class TodoFooter extends React.Component {
 			</footer>
 		);
 	}
-
-
 
 	renderTagFilters = (tags) => {
 		return _.uniq(tags);
