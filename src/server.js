@@ -33,7 +33,7 @@ const renderFullPage = html => {
 		<head>
 			<meta charset="UTF-8">
 			<link rel="stylesheet" href="/node_modules/todomvc-common/base.css">
-			<link rel="stylesheet" href="/node_modules/todomvc-app-css/index.css">
+				<link rel="stylesheet" href="/styles/style.css">
 			<script>
 				window.initialState = ${initialStateJSON}
 			</script>
