@@ -26,10 +26,19 @@ module.exports = {
     extensions: ['.js', '.jsx']
   },
   module: {
-    loaders: [{
-      test: /\.jsx?$/,
-      loaders: ['babel-loader'],
-      exclude: NODE_MODULES_PATH,
-    }]
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          { loader: "style-loader" },
+          { loader: "css-loader" }
+        ]
+      },
+      {
+        test: /\.jsx?$/,
+        loaders: ['babel-loader'],
+        exclude: NODE_MODULES_PATH,
+      }
+    ]
   }
 };
